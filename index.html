@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaking Topic Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <h1>🎤 Speaking Topic Generator</h1>
+
+        <p class="subtitle">
+            Pick a topic. Think about it. Speak your mind.
+        </p>
+
+        <div class="controls">
+
+            <div class="control">
+                <label for="category">Category</label>
+
+                <select id="category">
+                    <option value="general">General</option>
+                    <option value="technical">Technical</option>
+                    <option value="interview">Interview</option>
+                    <option value="debate">Debate</option>
+                </select>
+            </div>
+
+            <div class="control">
+                <label for="difficulty">Difficulty</label>
+
+                <select id="difficulty">
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="topic-card">
+
+            <p class="topic-label">YOUR TOPIC</p>
+
+            <h2 id="topic">
+                Click the button to get a topic
+            </h2>
+
+        </div>
+
+        <button id="generateBtn">
+            Generate Topic
+        </button>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
