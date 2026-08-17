@@ -609,3 +609,92 @@ footer {
         padding-bottom: 8px;
     }
 }
+
+/* =========================
+   TIMER
+========================= */
+
+.timer-section {
+    text-align: center;
+    margin-top: 28px;
+}
+
+#timer {
+    font-family: "Playfair Display", serif;
+    font-size: 42px;
+    font-weight: 600;
+    letter-spacing: 1px;
+
+    color: var(--text);
+
+    margin-bottom: 14px;
+}
+
+.timer-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+#timerBtn,
+#resetBtn {
+    height: 44px;
+    padding: 0 20px;
+
+    border-radius: 8px;
+
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+#timerBtn {
+    border: none;
+
+    background: var(--purple);
+    color: white;
+}
+
+#timerBtn:hover {
+    background: #422bb0;
+}
+
+#resetBtn {
+    border: 1px solid var(--border);
+
+    background: white;
+    color: var(--text);
+}
+
+#resetBtn:hover {
+    border-color: #aaa5a0;
+}
+
+#timer.running {
+    color: var(--purple);
+}
+
+@media (max-width: 500px) {
+
+    .timer-section {
+        margin-top: 22px;
+    }
+
+    #timer {
+        font-size: 36px;
+    }
+
+    .timer-buttons {
+        flex-direction: column;
+    }
+
+    #timerBtn,
+    #resetBtn {
+        width: 100%;
+    }
+}

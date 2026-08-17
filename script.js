@@ -118,3 +118,115 @@ function generateTopic() {
 
 
 generateButton.addEventListener("click", generateTopic);
+
+// =========================
+// TIMER
+// =========================
+
+const timerElement = document.getElementById("timer");
+const timerButton = document.getElementById("timerBtn");
+const resetButton = document.getElementById("resetBtn");
+
+let timeLeft = 60;
+let timerInterval = null;
+
+
+// Convert seconds into MM:SS
+function updateTimerDisplay() {
+
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+
+    timerElement.textContent =
+        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+}
+
+
+// Start the timer
+function startTimer() {
+
+    if (timerInterval !== null) {
+        return;
+    }
+
+    timerElement.classList.add("running");
+
+    timerButton.textContent = "⏸ Pause";
+
+    timerInterval = setInterval(function () {
+
+        timeLeft--;
+
+        updateTimerDisplay();
+
+        if (timeLeft <= 0) {
+
+            clearInterval(timerInterval);
+
+            timerInterval = null;
+
+            timerButton.textContent = "▶ Start speaking";
+
+            timerElement.classList.remove("running");
+
+            timeLeft = 0;
+
+            updateTimerDisplay();
+        }
+
+    }, 1000);
+}
+
+
+// Pause the timer
+function pauseTimer() {
+
+    clearInterval(timerInterval);
+
+    timerInterval = null;
+
+    timerButton.textContent = "▶ Resume";
+
+    timerElement.classList.remove("running");
+}
+
+
+// Reset the timer
+function resetTimer() {
+
+    clearInterval(timerInterval);
+
+    timerInterval = null;
+
+    timeLeft = 60;
+
+    updateTimerDisplay();
+
+    timerButton.textContent = "▶ Start speaking";
+
+    timerElement.classList.remove("running");
+}
+
+
+// Start / pause button
+timerButton.addEventListener("click", function () {
+
+    if (timerInterval === null) {
+
+        startTimer();
+
+    } else {
+
+        pauseTimer();
+
+    }
+
+});
+
+
+// Reset button
+resetButton.addEventListener("click", resetTimer);
+
+
+// Show the correct initial time
+updateTimerDisplay();
