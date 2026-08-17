@@ -1,10 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speaking Topic Generator</title>
+
+    <title>speak. — Practice Thinking Out Loud</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -12,54 +20,147 @@
 
     <main class="container">
 
-        <h1>🎤 Speaking Topic Generator</h1>
+        <!-- Logo -->
+        <header class="header">
+            <div class="logo">
+                speak<span>.</span>
+            </div>
+        </header>
 
-        <p class="subtitle">
-            Pick a topic. Think about it. Speak your mind.
-        </p>
 
-        <div class="controls">
+        <!-- Hero -->
+        <section class="hero">
 
-            <div class="control">
-                <label for="category">Category</label>
+            <p class="eyebrow">
+                PRACTICE THINKING OUT LOUD
+            </p>
+
+            <h1>
+                Think. Then speak.
+            </h1>
+
+            <p class="subtitle">
+                Pick a topic. Think about it. Speak your mind.
+            </p>
+
+        </section>
+
+
+        <!-- Filters -->
+        <section class="controls">
+
+            <div class="control-group">
+
+                <label for="category">
+                    CATEGORY
+                </label>
 
                 <select id="category">
-                    <option value="general">General</option>
-                    <option value="technical">Technical</option>
-                    <option value="interview">Interview</option>
-                    <option value="debate">Debate</option>
+
+                    <option value="general">
+                        General
+                    </option>
+
+                    <option value="technical">
+                        Technical
+                    </option>
+
+                    <option value="interview">
+                        Interview
+                    </option>
+
+                    <option value="debate">
+                        Debate
+                    </option>
+
                 </select>
+
             </div>
 
-            <div class="control">
-                <label for="difficulty">Difficulty</label>
+
+            <div class="control-group">
+
+                <label for="difficulty">
+                    DIFFICULTY
+                </label>
 
                 <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
+
+                    <option value="easy">
+                        Easy
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="hard">
+                        Hard
+                    </option>
+
                 </select>
+
             </div>
 
-        </div>
+        </section>
 
-        <div class="topic-card">
 
-            <p class="topic-label">YOUR TOPIC</p>
+        <!-- Topic -->
+        <section class="topic-card">
+
+            <p class="topic-label">
+               Here's something to think about.
+            </p>
+
+            <div class="quote-mark">
+                “
+            </div>
 
             <h2 id="topic">
-                Click the button to get a topic
+                Will AI eventually replace software developers?
             </h2>
+            <br>
+            <p>"Don't search for the right answer. There isn't one."</p>
+
+            <div class="divider"></div>
+
+            <p class="prompt">
+                Think for a moment.<br>
+                Then speak.
+            </p>
+
+        </section>
+
+
+        <!-- Generate -->
+        <div class="action">
+
+            <button id="generateBtn">
+              Give me another 
+                <span>→</span>
+            </button>
+            
 
         </div>
+        
 
-        <button id="generateBtn">
-            Generate Topic
-        </button>
+
+        <p class="ready">
+            <span>◷</span>
+            Ready when you are.
+        </p>
+
+
+        <!-- Small footer -->
+        <footer>
+            Practice thinking out loud.
+        </footer>
 
     </main>
+
 
     <script src="script.js"></script>
 
 </body>
+
 </html>
