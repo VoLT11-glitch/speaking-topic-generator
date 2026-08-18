@@ -94,30 +94,121 @@ const topics = {
 };
 
 
+// =========================
+// TOPIC GENERATOR
+// =========================
+
 const categorySelect = document.getElementById("category");
 const difficultySelect = document.getElementById("difficulty");
-const topicElement = document.getElementById("topic");
+const topicTrack = document.getElementById("topicTrack");
 const generateButton = document.getElementById("generateBtn");
+
+let isShuffling = false;
+
+
+
+
 
 
 function generateTopic() {
+
+    if (isShuffling) {
+        return;
+    }
+
+    isShuffling = true;
+
+    generateButton.disabled = true;
+    generateButton.style.opacity = "0.6";
+
 
     const category = categorySelect.value;
     const difficulty = difficultySelect.value;
 
     const availableTopics = topics[category][difficulty];
 
-    const randomIndex = Math.floor(
+
+    // Choose the final topic
+    const finalIndex = Math.floor(
         Math.random() * availableTopics.length
     );
 
-    const randomTopic = availableTopics[randomIndex];
+    const finalTopic = availableTopics[finalIndex];
 
-    topicElement.textContent = randomTopic;
+
+    // Create topics for the scrolling animation
+    const shuffleTopics = [];
+
+    for (let i = 0; i < 10; i++) {
+
+        const randomIndex = Math.floor(
+            Math.random() * availableTopics.length
+        );
+
+        shuffleTopics.push(
+            availableTopics[randomIndex]
+        );
+    }
+
+
+    // Final topic must be the last one
+    shuffleTopics.push(finalTopic);
+
+
+    // Remove old topics
+    topicTrack.innerHTML = "";
+
+
+    // Create the scrolling list
+    shuffleTopics.forEach(function(topic) {
+
+        const element = document.createElement("h2");
+
+        element.textContent = topic;
+
+        topicTrack.appendChild(element);
+
+    });
+
+
+    // Start from the top
+    topicTrack.style.transition = "none";
+    topicTrack.style.transform = "translateY(0)";
+
+
+    // Force browser to register the starting position
+    topicTrack.offsetHeight;
+
+
+    // Calculate how far we need to move
+    const topicHeight = 90;
+
+    const finalPosition =
+        -(shuffleTopics.length - 1) * topicHeight;
+
+
+    // Start the smooth scroll
+    topicTrack.style.transition =
+        "transform 2.2s cubic-bezier(0.12, 0.8, 0.18, 1)";
+
+    topicTrack.style.transform =
+        `translateY(${finalPosition}px)`;
+
+
+    // Animation finished
+    setTimeout(function() {
+
+        isShuffling = false;
+
+        generateButton.disabled = false;
+        generateButton.style.opacity = "1";
+
+    }, 2300);
 }
 
 
 generateButton.addEventListener("click", generateTopic);
+
 
 // =========================
 // TIMER
@@ -228,5 +319,5 @@ timerButton.addEventListener("click", function () {
 resetButton.addEventListener("click", resetTimer);
 
 
-// Show the correct initial time
+// Show initial time
 updateTimerDisplay();
