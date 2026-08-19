@@ -181,7 +181,7 @@ function generateTopic() {
 
 
     // Calculate how far we need to move
-    const topicHeight = 90;
+    const topicHeight = 120;
 
     const finalPosition =
         -(shuffleTopics.length - 1) * topicHeight;
@@ -214,11 +214,18 @@ generateButton.addEventListener("click", generateTopic);
 // TIMER
 // =========================
 
+
+// =========================
+// TIMER
+// =========================
+
 const timerElement = document.getElementById("timer");
 const timerButton = document.getElementById("timerBtn");
 const resetButton = document.getElementById("resetBtn");
+const durationButtons = document.querySelectorAll(".duration-btn");
 
 let timeLeft = 60;
+let selectedDuration = 60;
 let timerInterval = null;
 
 
@@ -233,6 +240,49 @@ function updateTimerDisplay() {
 }
 
 
+// Select speaking duration
+function selectDuration(duration) {
+
+    // Don't change duration while timer is running
+    if (timerInterval !== null) {
+        return;
+    }
+
+    selectedDuration = duration;
+    timeLeft = duration;
+
+    updateTimerDisplay();
+
+    // Remove active state from all buttons
+    durationButtons.forEach(function(button) {
+        button.classList.remove("active");
+    });
+
+    // Add active state to selected button
+    document
+        .querySelector(`[data-duration="${duration}"]`)
+        .classList.add("active");
+
+    timerButton.textContent = "▶ Start speaking";
+}
+
+
+// Duration button clicks
+durationButtons.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const duration = Number(
+            button.dataset.duration
+        );
+
+        selectDuration(duration);
+
+    });
+
+});
+
+
 // Start the timer
 function startTimer() {
 
@@ -244,7 +294,7 @@ function startTimer() {
 
     timerButton.textContent = "⏸ Pause";
 
-    timerInterval = setInterval(function () {
+    timerInterval = setInterval(function() {
 
         timeLeft--;
 
@@ -289,7 +339,8 @@ function resetTimer() {
 
     timerInterval = null;
 
-    timeLeft = 60;
+    // Reset to the selected duration
+    timeLeft = selectedDuration;
 
     updateTimerDisplay();
 
@@ -300,7 +351,7 @@ function resetTimer() {
 
 
 // Start / pause button
-timerButton.addEventListener("click", function () {
+timerButton.addEventListener("click", function() {
 
     if (timerInterval === null) {
 
@@ -320,4 +371,4 @@ resetButton.addEventListener("click", resetTimer);
 
 
 // Show initial time
-updateTimerDisplay();
+updateTimerDisplay();   
