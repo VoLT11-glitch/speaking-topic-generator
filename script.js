@@ -199,12 +199,14 @@ function generateTopic() {
     // Animation finished
     setTimeout(function() {
 
-        isShuffling = false;
+    saveTopicToHistory(finalTopic);
 
-        generateButton.disabled = false;
-        generateButton.style.opacity = "1";
+    isShuffling = false;
 
-    }, 2300);
+    generateButton.disabled = false;
+    generateButton.style.opacity = "1";
+
+}, 2300);
 }
 
 
