@@ -102,6 +102,7 @@ const categorySelect = document.getElementById("category");
 const difficultySelect = document.getElementById("difficulty");
 const topicTrack = document.getElementById("topicTrack");
 const generateButton = document.getElementById("generateBtn");
+const topicHistory = document.getElementById("topicHistory");
 
 let isShuffling = false;
 
@@ -208,7 +209,90 @@ function generateTopic() {
 
 
 generateButton.addEventListener("click", generateTopic);
+// =========================
+// TOPIC HISTORY
+// =========================
 
+const MAX_HISTORY = 5;
+
+
+// Get saved topics
+function getTopicHistory() {
+
+    const savedHistory = localStorage.getItem("topicHistory");
+
+    if (!savedHistory) {
+        return [];
+    }
+
+    return JSON.parse(savedHistory);
+}
+
+
+// Save a new topic
+function saveTopicToHistory(topic) {
+
+    let history = getTopicHistory();
+
+    // Remove the topic if it already exists
+    history = history.filter(function(item) {
+        return item !== topic;
+    });
+
+    // Put newest topic at the beginning
+    history.unshift(topic);
+
+    // Keep only the latest 5
+    history = history.slice(0, MAX_HISTORY);
+
+    localStorage.setItem(
+        "topicHistory",
+        JSON.stringify(history)
+    );
+
+    displayTopicHistory();
+}
+
+
+// Display history on the page
+function displayTopicHistory() {
+
+    const history = getTopicHistory();
+
+    topicHistory.innerHTML = "";
+
+
+    if (history.length === 0) {
+
+        const emptyMessage = document.createElement("p");
+
+        emptyMessage.className = "empty-history";
+
+        emptyMessage.textContent =
+            "Your recent topics will appear here.";
+
+        topicHistory.appendChild(emptyMessage);
+
+        return;
+    }
+
+
+    history.forEach(function(topic) {
+
+        const item = document.createElement("div");
+
+        item.className = "history-item";
+
+        item.textContent = topic;
+
+        topicHistory.appendChild(item);
+
+    });
+}
+
+
+// Show saved history when page loads
+displayTopicHistory();
 
 // =========================
 // TIMER
