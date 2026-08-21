@@ -197,7 +197,7 @@ select:focus {
 .topic-card {
     position: relative;
 
-    min-height: 280px;
+    min-height: 220px;
 
     padding: 35px 80px;
 
@@ -514,99 +514,182 @@ footer {
     }
 }
 /* =========================
-   DESKTOP - FIT ONE SCREEN
+   DESKTOP - ONE SCREEN
 ========================= */
 
 @media (min-width: 801px) {
 
     .header {
-        padding-top: 18px;
+        padding-top: 12px;
     }
 
     .logo {
-        font-size: 64px;
+        font-size: 58px;
     }
 
     .hero {
-        margin-top: 12px;
-        margin-bottom: 28px;
+        margin-top: 8px;
+        margin-bottom: 18px;
     }
 
     .eyebrow {
-        margin-bottom: 12px;
-        font-size: 13px;
+        margin-bottom: 7px;
+        font-size: 11px;
     }
 
     .hero h1 {
-        font-size: 36px;
+        font-size: 32px;
     }
 
     .subtitle {
-        margin-top: 10px;
-        font-size: 16px;
-    }
-
-    .controls {
-        margin-bottom: 22px;
-        gap: 35px;
-    }
-
-    .control-group {
-        gap: 7px;
-    }
-
-    select {
-        height: 52px;
-        font-size: 16px;
-    }
-
-    .topic-card {
-        min-height: 245px;
-        padding: 30px 70px;
-    }
-
-    .topic-label {
-        margin-bottom: 18px;
-        font-size: 13px;
-    }
-
-    .quote-mark {
-        width: 55px;
-        height: 55px;
-        left: 40px;
-        font-size: 40px;
-    }
-
-    .topic-card h2 {
-        font-size: 40px;
-    }
-
-    .divider {
-        margin: 14px 0 10px;
-    }
-
-    .prompt {
+        margin-top: 6px;
         font-size: 14px;
     }
 
-    .action {
-        margin-top: 16px;
+
+    /* FILTERS */
+
+    .controls {
+        margin-bottom: 14px;
+        gap: 25px;
     }
 
-    #generateBtn {
+    .control-group {
+        gap: 5px;
+    }
+
+    .control-group label {
+        font-size: 11px;
+    }
+
+    select {
+        height: 44px;
+        font-size: 15px;
+    }
+
+
+    /* TOPIC */
+
+    .topic-card {
+        min-height: 220px;
+        padding: 22px 65px;
+    }
+
+    .topic-label {
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+
+    .quote-mark {
+        width: 48px;
         height: 48px;
-        min-width: 220px;
-        font-size: 16px;
+        left: 32px;
+        font-size: 34px;
     }
 
-    .ready {
-        margin-top: 6px;
+    .topic-track h2 {
+        font-size: 36px;
+    }
+
+    .divider {
+        margin: 8px 0 6px;
+    }
+
+    .prompt {
         font-size: 13px;
     }
 
-    footer {
+
+    /* GENERATE */
+
+    .action {
+        margin-top: 10px;
+    }
+
+    #generateBtn {
+        height: 44px;
+        min-width: 210px;
+        font-size: 15px;
+    }
+
+
+    /* TIMER */
+
+    .timer-section {
         margin-top: 12px;
-        padding-bottom: 8px;
+    }
+
+    .timer-label {
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+
+    .duration-options {
+        margin-bottom: 6px;
+    }
+
+    .duration-btn {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    #timer {
+        font-size: 34px;
+        margin-bottom: 6px;
+    }
+
+    #timerBtn,
+    #resetBtn {
+        height: 38px;
+        padding: 0 16px;
+        font-size: 13px;
+    }
+
+
+    /* RECENT TOPICS */
+
+    .history-section {
+        max-width: 900px;
+        margin: 14px auto 0;
+    }
+
+    .history-label {
+        margin-bottom: 5px;
+        font-size: 10px;
+    }
+
+    .topic-history {
+        display: flex;
+        gap: 18px;
+        overflow: hidden;
+    }
+
+    .history-item {
+        flex: 1;
+
+        padding: 6px 0;
+
+        border-bottom: none;
+
+        font-size: 12px;
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+
+    /* READY + FOOTER */
+
+    .ready {
+        margin-top: 4px;
+        font-size: 11px;
+    }
+
+    footer {
+        margin-top: 5px;
+        padding-bottom: 5px;
+        font-size: 11px;
     }
 }
 
@@ -616,7 +699,7 @@ footer {
 
 .timer-section {
     text-align: center;
-    margin-top: 28px;
+    margin-top: 18px;
 }
 
 #timer {
@@ -627,7 +710,7 @@ footer {
 
     color: var(--text);
 
-    margin-bottom: 14px;
+    margin-bottom: 8px;
 }
 
 .timer-buttons {
@@ -786,7 +869,7 @@ footer {
     justify-content: center;
     gap: 8px;
 
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .duration-btn {
@@ -823,10 +906,8 @@ footer {
 
 .history-section {
     width: 100%;
-    max-width: 700px;
-
-    margin: 45px auto 0;
-
+    max-width: 900px;
+    margin: 20px auto 0;
     text-align: left;
 }
 
@@ -843,18 +924,22 @@ footer {
 
 .topic-history {
     display: flex;
-    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
 }
 
 .history-item {
-    padding: 14px 0;
+    padding: 8px 0;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: none;
 
-    font-family: "DM Sans", sans-serif;
-    font-size: 15px;
+    font-size: 13px;
 
-    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    flex: 1;
 }
 
 .empty-history {
@@ -862,4 +947,113 @@ footer {
 
     font-size: 14px;
     color: #999;
+}
+
+
+@media (min-width: 801px) {
+
+    /* Compress the top */
+    .header {
+        padding-top: 5px;
+    }
+
+    .logo {
+        font-size: 52px;
+    }
+
+    .hero {
+        margin-top: 2px;
+        margin-bottom: 10px;
+    }
+
+    .hero h1 {
+        font-size: 29px;
+    }
+
+    .subtitle {
+        margin-top: 3px;
+    }
+
+    /* Filters */
+    .controls {
+        margin-bottom: 10px;
+    }
+
+    select {
+        height: 40px;
+    }
+
+    /* Topic card */
+    .topic-card {
+        min-height: 0;
+        height: 250px;
+        padding: 18px 60px;
+    }
+
+    .topic-label {
+        margin-bottom: 5px;
+    }
+
+    .topic-window {
+        height: 120px;
+    }
+
+    .topic-track h2 {
+        height: 120px;
+        font-size: 34px;
+    }
+
+    .topic-card > p:not(.topic-label):not(.prompt) {
+        margin: 4px 0;
+    }
+
+    .divider {
+        margin: 5px 0;
+    }
+
+    /* Generate button */
+    .action {
+        margin-top: 8px;
+    }
+
+    #generateBtn {
+        height: 40px;
+    }
+
+    /* Timer */
+    .timer-section {
+        margin-top: 8px;
+    }
+
+    .timer-label {
+        margin-bottom: 3px;
+    }
+
+    .duration-options {
+        margin-bottom: 4px;
+    }
+
+    #timer {
+        font-size: 30px;
+        margin-bottom: 4px;
+    }
+
+    .timer-buttons {
+        gap: 6px;
+    }
+
+    #timerBtn,
+    #resetBtn {
+        height: 36px;
+    }
+
+    /* History */
+    .history-section {
+        margin-top: 8px;
+    }
+
+    .ready,
+    footer {
+        display: none;
+    }
 }
