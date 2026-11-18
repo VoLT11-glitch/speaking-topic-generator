@@ -698,6 +698,34 @@ function renderTimer() {
     const locked = phase === "think" || phase === "speak" || phase === "paused";
     thinkToggle.disabled = locked;
     recordToggle.disabled = locked;
+
+    setFocusMode(locked);
+}
+
+
+// FOCUS MODE
+// While a round is running, everything except the topic and the
+// timer fades back (and can't be clicked by accident).
+let focusOn = false;
+
+function setFocusMode(on) {
+
+    if (on === focusOn) {
+        return;
+    }
+
+    focusOn = on;
+    document.body.classList.toggle("focus", on);
+
+    // Make sure the topic and the timer are both on screen
+    if (on) {
+        const clock = document.querySelector(".speak-clock").getBoundingClientRect();
+        const card = topicCard.getBoundingClientRect();
+
+        if (card.top < 0 || clock.bottom > window.innerHeight) {
+            topicCard.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
 }
 
 
@@ -1449,7 +1477,11 @@ document.addEventListener("keydown", function(event) {
 
     if (key === " ") {
         event.preventDefault();
-        generateTopic();
+
+        // No topic changes in the middle of an answer
+        if (!focusOn) {
+            generateTopic();
+        }
     } else if (key === "t") {
         toggleTimer();
     } else if (key === "r") {

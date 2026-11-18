@@ -6,7 +6,8 @@ Live site: https://speak-khaki-xi.vercel.app
 
 | Version | Date | What changed | Code |
 |---|---|---|---|
-| **v2.0** | 18 Nov 2026 | Redesign: category chips, two zones (topic / speak), one column width, bigger timer, less repeated copy | latest on `main` |
+| **v2.1** | 18 Nov 2026 | Focus mode while speaking | latest on `main` |
+| v2.0 | 18 Nov 2026 | Redesign: category chips, two zones (topic / speak), one column width, bigger timer, less repeated copy | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/506d76e25530c7e06f6bcb86c1f765602f07e70f) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/506d76e25530c7e06f6bcb86c1f765602f07e70f.zip) |
 | v1.9 | 18 Nov 2026 | Read-along v2: 30s / 1 min / 2 min answers, pace slider, karaoke fill, Fraunces font | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/b9a9be4868cb37e896cdbbc45befc34d2bd6a2ec) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/b9a9be4868cb37e896cdbbc45befc34d2bd6a2ec.zip) |
 | v1.8 | 18 Nov 2026 | Read-along sample answers | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/eebb6e4811274135492fca5f4c025aa4c618c3a8) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/eebb6e4811274135492fca5f4c025aa4c618c3a8.zip) |
 | v1.7 | 18 Nov 2026 | Bug fixes, think time, recording, clickable history, shortcuts | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/5cb22280c072b1f625fd920a4c92fb56a4a29ece) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/5cb22280c072b1f625fd920a4c92fb56a4a29ece.zip) |
@@ -17,6 +18,13 @@ Live site: https://speak-khaki-xi.vercel.app
 | v1.0 | — | First version | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/4affcdee060d03b31d128161646521131fac3d5a) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/4affcdee060d03b31d128161646521131fac3d5a.zip) |
 
 ---
+
+## v2.1 — Focus mode
+
+- While a round runs, everything fades back except the topic and the timer (and can't be clicked)
+- Timer grows (84px desktop, 72px phone); the card and timer scroll into view
+- Space can't change the topic mid-answer
+- Ends when the time is up or you press Reset
 
 ## v2.0 — Redesign
 
@@ -61,6 +69,7 @@ git tag v1.6 9487a35
 git tag v1.7 5cb2228
 git tag v1.8 eebb6e4
 git tag v1.9 b9a9be4
+git tag v2.0 506d76e
 git push origin --tags
 ```
 
