@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>speak. — Practice Thinking Out Loud</title>
+    <meta name="description" content="Pick a topic. Think about it. Speak your mind. A small tool for practising speaking out loud.">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,11 +117,11 @@
                 “
             </div>
 
-            <div class="topic-window">
-    <div id="topicTrack" class="topic-track">
-        <h2>Will AI eventually replace software developers?</h2>
-    </div>
-</div>
+            <div class="topic-window" aria-live="polite">
+                <div id="topicTrack" class="topic-track">
+                    <h2><span>Will AI eventually replace software developers?</span></h2>
+                </div>
+            </div>
             <br>
             <p>"Don't search for the right answer. There isn't one."</p>
 
@@ -138,10 +139,13 @@
         <div class="action">
 
             <button id="generateBtn">
-              Give me another 
+                Give me another
                 <span>→</span>
             </button>
-            
+
+            <p class="shortcuts">
+                <kbd>Space</kbd> new topic &nbsp;·&nbsp; <kbd>T</kbd> start / pause &nbsp;·&nbsp; <kbd>R</kbd> reset
+            </p>
 
         </div>
       <div class="timer-section">
@@ -166,7 +170,21 @@
 
     </div>
 
+    <div class="timer-options">
+
+        <button id="thinkToggle" class="option-toggle" aria-pressed="false">
+            Think first · 15s
+        </button>
+
+        <button id="recordToggle" class="option-toggle" aria-pressed="false">
+            Record me
+        </button>
+
+    </div>
+
     <div id="timer">01:00</div>
+
+    <p id="timerStatus" class="timer-status" aria-live="polite"></p>
 
     <div class="timer-buttons">
 
@@ -177,6 +195,21 @@
         <button id="resetBtn">
             Reset
         </button>
+
+    </div>
+
+    <div id="playback" class="playback" hidden>
+
+        <div class="playback-head">
+            <p class="playback-label">LISTEN BACK</p>
+            <a id="downloadLink" download="speak-recording.webm">Download</a>
+        </div>
+
+        <audio id="playbackAudio" controls></audio>
+
+        <p class="playback-note">
+            Stays on your device. Gone when you leave the page.
+        </p>
 
     </div>
 
