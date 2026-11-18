@@ -6,7 +6,8 @@ Live site: https://speak-khaki-xi.vercel.app
 
 | Version | Date | What changed | Code |
 |---|---|---|---|
-| **v2.1** | 18 Nov 2026 | Focus mode while speaking | latest on `main` |
+| **v2.2** | 18 Nov 2026 | Timer and read-along now run together | latest on `main` |
+| v2.1 | 18 Nov 2026 | Focus mode while speaking | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/e876b4c5373feb994526e23a2b92e889d17ee508) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/e876b4c5373feb994526e23a2b92e889d17ee508.zip) |
 | v2.0 | 18 Nov 2026 | Redesign: category chips, two zones (topic / speak), one column width, bigger timer, less repeated copy | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/506d76e25530c7e06f6bcb86c1f765602f07e70f) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/506d76e25530c7e06f6bcb86c1f765602f07e70f.zip) |
 | v1.9 | 18 Nov 2026 | Read-along v2: 30s / 1 min / 2 min answers, pace slider, karaoke fill, Fraunces font | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/b9a9be4868cb37e896cdbbc45befc34d2bd6a2ec) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/b9a9be4868cb37e896cdbbc45befc34d2bd6a2ec.zip) |
 | v1.8 | 18 Nov 2026 | Read-along sample answers | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/eebb6e4811274135492fca5f4c025aa4c618c3a8) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/eebb6e4811274135492fca5f4c025aa4c618c3a8.zip) |
@@ -18,6 +19,12 @@ Live site: https://speak-khaki-xi.vercel.app
 | v1.0 | — | First version | [Code](https://github.com/VoLT11-glitch/speaking-topic-generator/tree/4affcdee060d03b31d128161646521131fac3d5a) · [Zip](https://github.com/VoLT11-glitch/speaking-topic-generator/archive/4affcdee060d03b31d128161646521131fac3d5a.zip) |
 
 ---
+
+## v2.2 — Timer and read-along in sync
+
+- Pause / Resume on the timer now pauses / resumes the read-along too, and the other way round
+- Starting Read along while the 15s think timer runs cancels it and starts the speaking timer
+- Read along from idle starts the speaking timer; Restart restarts both; Reset resets both
 
 ## v2.1 — Focus mode
 
