@@ -799,6 +799,9 @@ function pauseTimer() {
     pausedPhase = phase;
     phase = "paused";
 
+    // Read-along follows the timer
+    pauseReadAlong();
+
     pauseRecording();
     renderTimer();
 }
@@ -814,6 +817,11 @@ function resumeTimer() {
 
     clearInterval(tickInterval);
     tickInterval = setInterval(tick, 200);
+
+    // Read-along follows the timer
+    if (sampleText.classList.contains("paused")) {
+        startReadAlong();
+    }
 
     renderTimer();
 }
@@ -851,6 +859,9 @@ function resetTimer() {
 
     stopRecording(false);
     timerElement.classList.remove("done");
+
+    // Read-along goes back to the start with the timer
+    stopReadAlong();
 
     renderTimer();
 }
@@ -1249,7 +1260,7 @@ function updateSample(topic) {
         span.textContent = word;
 
         span.addEventListener("click", function() {
-            startReadAlong(index);
+            startReading(index);
         });
 
         sampleWords.push(span);
@@ -1431,17 +1442,46 @@ sampleToggle.addEventListener("click", function() {
     setSampleOpen(!sampleOpen);
 });
 
+// Reading and the speaking timer run together.
+// Starting to read ends the think time and starts the speaking
+// timer (or resumes it, if it was paused). Pausing one pauses the other.
+function startReading(fromIndex) {
+
+    unlockAudio();
+
+    if (phase === "think" || (phase === "paused" && pausedPhase === "think")) {
+        // Skip the think time: go straight to speaking
+        pausedPhase = null;
+        beginPhase("speak", selectedDuration * 1000);
+    } else if (phase === "paused") {
+        resumeTimer();              // also resumes a paused read-along
+    } else if (phase === "idle" || phase === "done") {
+        timerElement.classList.remove("done");
+        beginPhase("speak", selectedDuration * 1000);
+    }
+
+    // resumeTimer may already have restarted the reading
+    if (typeof fromIndex === "number" || !isReading) {
+        startReadAlong(fromIndex);
+    }
+}
+
+
 readAlongButton.addEventListener("click", function() {
     if (isReading) {
         pauseReadAlong();
+
+        if (phase === "think" || phase === "speak") {
+            pauseTimer();
+        }
     } else {
-        startReadAlong();
+        startReading();
     }
 });
 
 readRestartButton.addEventListener("click", function() {
-    stopReadAlong();
-    startReadAlong(0);
+    resetTimer();           // also puts the read-along back to the start
+    startReading(0);
 });
 
 // Pace changes apply from the next word, without restarting
