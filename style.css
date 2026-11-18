@@ -359,55 +359,92 @@ select:focus {
     letter-spacing: 2px;
 }
 
-.pace-options {
-    display: flex;
-    gap: 4px;
+.sample-length {
+    color: #a09ea8;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: none;
 }
 
-.pace-btn {
-    padding: 4px 10px;
-    border: 1px solid transparent;
-    border-radius: 999px;
-    background: none;
+/* Pace slider */
+.pace-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     color: var(--muted);
     font-size: 12px;
-    cursor: pointer;
-    transition: 0.2s ease;
 }
 
-.pace-btn:hover {
-    color: var(--text);
-}
-
-.pace-btn.active {
-    border-color: var(--border);
-    background: var(--background);
+.pace-value {
+    min-width: 112px;
     color: var(--text);
     font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+#paceSlider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 130px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--border);
+    cursor: pointer;
+}
+
+#paceSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 3px solid var(--white);
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 0 0 1px var(--purple);
+}
+
+#paceSlider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: 3px solid var(--white);
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 0 0 1px var(--purple);
 }
 
 /* The paragraph */
 .sample-text {
-    font-family: "Playfair Display", serif;
-    font-size: 21px;
-    line-height: 1.65;
+    font-family: "Fraunces", "Playfair Display", Georgia, serif;
+    font-optical-sizing: auto;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.2px;
     color: var(--text);
 }
 
 .word {
-    padding: 1px 1px;
+    padding: 0 1px;
     border-radius: 4px;
     cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease;
+    transition: color 0.2s ease;
 }
 
-.word:hover {
-    background: var(--purple-light);
+@media (hover: hover) {
+    .word:hover {
+        background: var(--purple-light);
+    }
 }
 
-/* While reading: upcoming words fade back, read words stay solid */
+/*
+   Karaoke effect while reading:
+   - upcoming words are faded
+   - the current word fills with purple from left to right,
+     taking exactly as long as the word is "spoken"
+   - words already read turn solid
+*/
 .sample-text.reading .word {
-    color: #b3b0bb;
+    color: #bdbac4;
 }
 
 .sample-text.reading .word.read {
@@ -415,8 +452,23 @@ select:focus {
 }
 
 .sample-text.reading .word.current {
-    color: var(--purple);
-    background: var(--purple-light);
+    color: transparent;
+    background-image:
+        linear-gradient(var(--purple), var(--purple)),
+        linear-gradient(#bdbac4, #bdbac4);
+    background-size: 0% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: word-fill var(--word-time, 400ms) linear forwards;
+}
+
+.sample-text.paused .word.current {
+    animation-play-state: paused;
+}
+
+@keyframes word-fill {
+    to { background-size: 100% 100%, 100% 100%; }
 }
 
 .sample-controls {
@@ -968,7 +1020,15 @@ footer {
     }
 
     .sample-text {
-        font-size: 19px;
+        font-size: 21px;
+    }
+
+    .pace-control {
+        width: 100%;
+    }
+
+    #paceSlider {
+        flex: 1;
     }
 
     .sample-hint {
@@ -1165,5 +1225,9 @@ footer {
     .topic-card.recalled,
     .timer-status.recording::before {
         animation: none;
+    }
+
+    .sample-text.reading .word.current {
+        animation-duration: 1ms;
     }
 }

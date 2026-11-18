@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -146,13 +146,15 @@
 
                 <div class="sample-head">
 
-                    <p class="sample-label">ONE WAY TO ANSWER</p>
+                    <p class="sample-label">
+                        ONE WAY TO ANSWER <span id="sampleLength" class="sample-length"></span>
+                    </p>
 
-                    <div class="pace-options" role="group" aria-label="Reading pace">
-                        <button class="pace-btn" data-wpm="110">Slow</button>
-                        <button class="pace-btn" data-wpm="140">Normal</button>
-                        <button class="pace-btn" data-wpm="170">Fast</button>
-                    </div>
+                    <label class="pace-control">
+                        <span class="pace-word">Pace</span>
+                        <input id="paceSlider" type="range" min="110" max="170" step="5" value="135" aria-label="Reading pace in words per minute">
+                        <span id="paceValue" class="pace-value">135 wpm</span>
+                    </label>
 
                 </div>
 
@@ -282,6 +284,7 @@
 
 
     <script src="samples.js"></script>
+    <script src="samples-long.js"></script>
     <script src="script.js"></script>
 
 </body>
