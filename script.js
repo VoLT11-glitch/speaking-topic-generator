@@ -272,8 +272,19 @@ function shuffleArray(items) {
 // TOPIC GENERATOR
 // =========================
 
-const categorySelect = document.getElementById("category");
-const difficultySelect = document.getElementById("difficulty");
+const categoryChips = document.getElementById("categoryChips");
+const difficultyChips = document.getElementById("difficultyChips");
+const topicMeta = document.getElementById("topicMeta");
+
+const CATEGORY_NAMES = { general: "General", technical: "Technical", interview: "Interview", debate: "Debate" };
+const DIFFICULTY_NAMES = { easy: "Easy", medium: "Medium", hard: "Hard" };
+
+// Current choices (remembered between visits)
+let selectedCategory = readSetting("category", "general");
+let selectedDifficulty = readSetting("difficulty", "easy");
+
+if (!CATEGORY_NAMES[selectedCategory]) selectedCategory = "general";
+if (!DIFFICULTY_NAMES[selectedDifficulty]) selectedDifficulty = "easy";
 const topicCard = document.querySelector(".topic-card");
 const topicWindow = document.querySelector(".topic-window");
 const topicTrack = document.getElementById("topicTrack");
@@ -363,7 +374,23 @@ function showTopic(text) {
 
     currentTopic = text;
 
+    updateMeta(text);
     updateSample(text);
+}
+
+
+// The small label on the card shows where the topic on screen comes from
+// (it can differ from the chips when you bring back a recent topic)
+function updateMeta(text) {
+
+    for (const category in topics) {
+        for (const difficulty in topics[category]) {
+            if (topics[category][difficulty].includes(text)) {
+                topicMeta.textContent = `${CATEGORY_NAMES[category]} · ${DIFFICULTY_NAMES[difficulty]}`;
+                return;
+            }
+        }
+    }
 }
 
 
@@ -380,8 +407,8 @@ function generateTopic() {
 
     pauseReadAlong();
 
-    const category = categorySelect.value;
-    const difficulty = difficultySelect.value;
+    const category = selectedCategory;
+    const difficulty = selectedDifficulty;
     const availableTopics = topics[category][difficulty];
 
     // Choose the final topic (no repeats until the bag is empty)
@@ -442,8 +469,46 @@ function generateTopic() {
 generateButton.addEventListener("click", generateTopic);
 
 // New category / difficulty → new topic from it
-categorySelect.addEventListener("change", generateTopic);
-difficultySelect.addEventListener("change", generateTopic);
+// Mark the selected chip in a group
+function renderChips(group, value) {
+    group.querySelectorAll(".chip").forEach(function(chip) {
+        chip.setAttribute("aria-checked", String(chip.dataset.value === value));
+    });
+}
+
+function renderFilters() {
+    renderChips(categoryChips, selectedCategory);
+    renderChips(difficultyChips, selectedDifficulty);
+    topicMeta.textContent = `${CATEGORY_NAMES[selectedCategory]} · ${DIFFICULTY_NAMES[selectedDifficulty]}`;
+}
+
+categoryChips.addEventListener("click", function(event) {
+
+    const chip = event.target.closest(".chip");
+
+    if (!chip || chip.dataset.value === selectedCategory) {
+        return;
+    }
+
+    selectedCategory = chip.dataset.value;
+    writeSetting("category", selectedCategory);
+    renderFilters();
+    generateTopic();
+});
+
+difficultyChips.addEventListener("click", function(event) {
+
+    const chip = event.target.closest(".chip");
+
+    if (!chip || chip.dataset.value === selectedDifficulty) {
+        return;
+    }
+
+    selectedDifficulty = chip.dataset.value;
+    writeSetting("difficulty", selectedDifficulty);
+    renderFilters();
+    generateTopic();
+});
 
 // Re-fit the text when the screen WIDTH changes (e.g. phone rotation).
 // Height-only changes are ignored: phones fire "resize" whenever the
@@ -1399,7 +1464,8 @@ document.addEventListener("keydown", function(event) {
 
 // Start with a random topic from the selected category,
 // instead of the same hard-coded one every time
-showTopic(getNextTopic(categorySelect.value, difficultySelect.value));
+renderFilters();
+showTopic(getNextTopic(selectedCategory, selectedDifficulty));
 
 displayTopicHistory();
 renderToggles();

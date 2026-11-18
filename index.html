@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -21,263 +21,174 @@
 
     <main class="container">
 
-        <!-- Logo -->
+        <!-- Header -->
         <header class="header">
+
             <div class="logo">
                 speak<span>.</span>
             </div>
+
+            <p class="tagline">Think. Then speak.</p>
+
         </header>
 
 
-        <!-- Hero -->
-        <section class="hero">
+        <!-- ========== TOPIC ZONE ========== -->
+        <section class="topic-zone">
 
-            <p class="eyebrow">
-                PRACTICE THINKING OUT LOUD
-            </p>
+            <!-- Category + difficulty chips -->
+            <div class="filters">
 
-            <h1>
-                Think. Then speak.
-            </h1>
-
-            <p class="subtitle">
-                Pick a topic. Think about it. Speak your mind.
-            </p>
-
-        </section>
-
-
-        <!-- Filters -->
-        <section class="controls">
-
-            <div class="control-group">
-
-                <label for="category">
-                    CATEGORY
-                </label>
-
-                <select id="category">
-
-                    <option value="general">
-                        General
-                    </option>
-
-                    <option value="technical">
-                        Technical
-                    </option>
-
-                    <option value="interview">
-                        Interview
-                    </option>
-
-                    <option value="debate">
-                        Debate
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <div class="control-group">
-
-                <label for="difficulty">
-                    DIFFICULTY
-                </label>
-
-                <select id="difficulty">
-
-                    <option value="easy">
-                        Easy
-                    </option>
-
-                    <option value="medium">
-                        Medium
-                    </option>
-
-                    <option value="hard">
-                        Hard
-                    </option>
-
-                </select>
-
-            </div>
-
-        </section>
-
-
-        <!-- Topic -->
-        <section class="topic-card">
-
-            <p class="topic-label">
-               Here's something to think about.
-            </p>
-
-            <div class="quote-mark">
-                “
-            </div>
-
-            <div class="topic-window" aria-live="polite">
-                <div id="topicTrack" class="topic-track">
-                    <h2><span>Will AI eventually replace software developers?</span></h2>
-                </div>
-            </div>
-            <br>
-            <p>"Don't search for the right answer. There isn't one."</p>
-
-            <div class="divider"></div>
-
-            <p class="prompt">
-                Think for a moment.<br>
-                Then speak.
-            </p>
-
-        </section>
-
-
-        <!-- Read along -->
-        <section id="readAlong" class="read-along">
-
-            <button id="sampleToggle" class="sample-toggle" aria-expanded="false" aria-controls="samplePanel">
-                Read a sample answer <span class="arrow">↓</span>
-            </button>
-
-            <div id="samplePanel" class="sample-panel" hidden>
-
-                <div class="sample-head">
-
-                    <p class="sample-label">
-                        ONE WAY TO ANSWER <span id="sampleLength" class="sample-length"></span>
-                    </p>
-
-                    <label class="pace-control">
-                        <span class="pace-word">Pace</span>
-                        <input id="paceSlider" type="range" min="110" max="170" step="5" value="135" aria-label="Reading pace in words per minute">
-                        <span id="paceValue" class="pace-value">135 wpm</span>
-                    </label>
-
+                <div id="categoryChips" class="chips" role="radiogroup" aria-label="Category">
+                    <button class="chip" role="radio" data-value="general">General</button>
+                    <button class="chip" role="radio" data-value="technical">Technical</button>
+                    <button class="chip" role="radio" data-value="interview">Interview</button>
+                    <button class="chip" role="radio" data-value="debate">Debate</button>
                 </div>
 
-                <p id="sampleText" class="sample-text"></p>
-
-                <div class="sample-controls">
-
-                    <button id="readAlongBtn" class="read-btn">▶ Read along</button>
-
-                    <button id="readRestartBtn" class="read-restart">↺ Restart</button>
-
-                    <span class="sample-hint">Read it out loud. Tap any word to start there.</span>
-
+                <div id="difficultyChips" class="chips" role="radiogroup" aria-label="Difficulty">
+                    <button class="chip" role="radio" data-value="easy">Easy</button>
+                    <button class="chip" role="radio" data-value="medium">Medium</button>
+                    <button class="chip" role="radio" data-value="hard">Hard</button>
                 </div>
 
             </div>
 
+
+            <!-- Topic card -->
+            <article class="topic-card">
+
+                <p id="topicMeta" class="topic-meta">General · Easy</p>
+
+                <div class="topic-window" aria-live="polite">
+                    <div id="topicTrack" class="topic-track">
+                        <h2><span>Will AI eventually replace software developers?</span></h2>
+                    </div>
+                </div>
+
+                <p class="topic-note">“Don’t search for the right answer. There isn’t one.”</p>
+
+                <div class="card-actions">
+
+                    <button id="sampleToggle" class="link-btn" aria-expanded="false" aria-controls="samplePanel">
+                        Read a sample answer <span class="arrow">↓</span>
+                    </button>
+
+                    <button id="generateBtn" class="btn btn-secondary">
+                        Another topic <span class="btn-arrow">→</span>
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <!-- Read along (opens under the card) -->
+            <section id="readAlong" class="read-along">
+
+                <div id="samplePanel" class="sample-panel" hidden>
+
+                    <div class="sample-head">
+
+                        <p class="sample-label">
+                            One way to answer <span id="sampleLength" class="sample-length"></span>
+                        </p>
+
+                        <label class="pace-control">
+                            <span class="pace-word">Pace</span>
+                            <input id="paceSlider" type="range" min="110" max="170" step="5" value="135" aria-label="Reading pace in words per minute">
+                            <span id="paceValue" class="pace-value">135 wpm</span>
+                        </label>
+
+                    </div>
+
+                    <p id="sampleText" class="sample-text"></p>
+
+                    <div class="sample-controls">
+
+                        <button id="readAlongBtn" class="btn btn-primary btn-small">▶ Read along</button>
+
+                        <button id="readRestartBtn" class="btn btn-secondary btn-small">↺ Restart</button>
+
+                        <span class="sample-hint">Read it out loud. Tap any word to start there.</span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
         </section>
 
 
-        <!-- Generate -->
-        <div class="action">
+        <!-- ========== SPEAK ZONE ========== -->
+        <section class="speak-zone">
 
-            <button id="generateBtn">
-                Give me another
-                <span>→</span>
-            </button>
+            <!-- Left: settings -->
+            <div class="speak-settings">
+
+                <div class="segmented" role="radiogroup" aria-label="Speaking time">
+                    <button class="duration-btn" role="radio" data-duration="30">30 sec</button>
+                    <button class="duration-btn active" role="radio" data-duration="60">1 min</button>
+                    <button class="duration-btn" role="radio" data-duration="120">2 min</button>
+                </div>
+
+                <div class="timer-options">
+                    <button id="thinkToggle" class="chip chip-toggle" aria-pressed="false">Think first · 15s</button>
+                    <button id="recordToggle" class="chip chip-toggle" aria-pressed="false">Record me</button>
+                </div>
+
+            </div>
+
+            <!-- Middle: the timer -->
+            <div class="speak-clock">
+                <div id="timer">01:00</div>
+                <p id="timerStatus" class="timer-status" aria-live="polite"></p>
+            </div>
+
+            <!-- Right: actions -->
+            <div class="timer-buttons">
+                <button id="timerBtn" class="btn btn-primary">▶ Start speaking</button>
+                <button id="resetBtn" class="btn btn-secondary">Reset</button>
+            </div>
+
+            <!-- Recording playback (full width, under the bar) -->
+            <div id="playback" class="playback" hidden>
+
+                <div class="playback-head">
+                    <p class="playback-label">Listen back</p>
+                    <a id="downloadLink" download="speak-recording.webm">Download</a>
+                </div>
+
+                <audio id="playbackAudio" controls></audio>
+
+                <p class="playback-note">Stays on your device. Gone when you leave the page.</p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========== RECENT ========== -->
+        <section class="history-section">
+
+            <p class="section-label">Recent topics</p>
+
+            <div id="topicHistory" class="topic-history">
+                <p class="empty-history">Your recent topics will appear here.</p>
+            </div>
+
+        </section>
+
+
+        <footer class="footer">
 
             <p class="shortcuts">
-                <kbd>Space</kbd> new topic &nbsp;·&nbsp; <kbd>T</kbd> start / pause &nbsp;·&nbsp; <kbd>R</kbd> reset
+                <kbd>Space</kbd> new topic · <kbd>T</kbd> start / pause · <kbd>R</kbd> reset
             </p>
 
-        </div>
-      <div class="timer-section">
+            <p class="version">speak. v2.0</p>
 
-    <p class="timer-label">
-        SPEAK FOR
-    </p>
-
-    <div class="duration-options">
-
-        <button class="duration-btn" data-duration="30">
-            30 sec
-        </button>
-
-        <button class="duration-btn active" data-duration="60">
-            1 min
-        </button>
-
-        <button class="duration-btn" data-duration="120">
-            2 min
-        </button>
-
-    </div>
-
-    <div class="timer-options">
-
-        <button id="thinkToggle" class="option-toggle" aria-pressed="false">
-            Think first · 15s
-        </button>
-
-        <button id="recordToggle" class="option-toggle" aria-pressed="false">
-            Record me
-        </button>
-
-    </div>
-
-    <div id="timer">01:00</div>
-
-    <p id="timerStatus" class="timer-status" aria-live="polite"></p>
-
-    <div class="timer-buttons">
-
-        <button id="timerBtn">
-            ▶ Start speaking
-        </button>
-
-        <button id="resetBtn">
-            Reset
-        </button>
-
-    </div>
-
-    <div id="playback" class="playback" hidden>
-
-        <div class="playback-head">
-            <p class="playback-label">LISTEN BACK</p>
-            <a id="downloadLink" download="speak-recording.webm">Download</a>
-        </div>
-
-        <audio id="playbackAudio" controls></audio>
-
-        <p class="playback-note">
-            Stays on your device. Gone when you leave the page.
-        </p>
-
-    </div>
-
-</div>
-        
-<section class="history-section">
-
-    <p class="history-label">
-        RECENT TOPICS
-    </p>
-
-    <div id="topicHistory" class="topic-history">
-        <p class="empty-history">
-            Your recent topics will appear here.
-        </p>
-    </div>
-
-</section>
-
-        <p class="ready">
-            <span>◷</span>
-            Ready when you are.
-        </p>
-
-
-        <!-- Small footer -->
-        <footer>
-            Practice thinking out loud.
         </footer>
 
     </main>
