@@ -293,6 +293,178 @@ select:focus {
 
 
 /* =========================
+   READ ALONG (sample answer)
+========================= */
+
+.read-along {
+    width: min(850px, 100%);
+    margin: 12px auto 0;
+    text-align: center;
+}
+
+.read-along[hidden] {
+    display: none;
+}
+
+.sample-toggle {
+    padding: 4px 6px;
+    border: none;
+    background: none;
+    color: var(--purple);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sample-toggle:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.sample-toggle .arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.2s ease;
+}
+
+.sample-toggle[aria-expanded="true"] .arrow {
+    transform: rotate(180deg);
+}
+
+.sample-panel {
+    margin-top: 10px;
+    padding: 18px 24px 16px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--white);
+    text-align: left;
+}
+
+.sample-panel[hidden] {
+    display: none;
+}
+
+.sample-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.sample-label {
+    color: var(--purple);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.pace-options {
+    display: flex;
+    gap: 4px;
+}
+
+.pace-btn {
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.pace-btn:hover {
+    color: var(--text);
+}
+
+.pace-btn.active {
+    border-color: var(--border);
+    background: var(--background);
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* The paragraph */
+.sample-text {
+    font-family: "Playfair Display", serif;
+    font-size: 21px;
+    line-height: 1.65;
+    color: var(--text);
+}
+
+.word {
+    padding: 1px 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.word:hover {
+    background: var(--purple-light);
+}
+
+/* While reading: upcoming words fade back, read words stay solid */
+.sample-text.reading .word {
+    color: #b3b0bb;
+}
+
+.sample-text.reading .word.read {
+    color: var(--text);
+}
+
+.sample-text.reading .word.current {
+    color: var(--purple);
+    background: var(--purple-light);
+}
+
+.sample-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    margin-top: 14px;
+}
+
+.read-btn,
+.read-restart {
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.read-btn {
+    border: none;
+    background: var(--purple);
+    color: white;
+}
+
+.read-btn:hover {
+    background: var(--purple-dark);
+}
+
+.read-restart {
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+}
+
+.read-restart:hover {
+    border-color: #aaa5a0;
+}
+
+.sample-hint {
+    color: #a09ea8;
+    font-size: 12px;
+}
+
+
+/* =========================
    GENERATE BUTTON
 ========================= */
 
@@ -785,6 +957,24 @@ footer {
         min-width: 0;
     }
 
+    .sample-panel {
+        padding: 16px 16px 14px;
+    }
+
+    .sample-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .sample-text {
+        font-size: 19px;
+    }
+
+    .sample-hint {
+        width: 100%;
+    }
+
     .timer-section {
         margin-top: 22px;
     }
@@ -893,6 +1083,15 @@ footer {
     }
 
     .prompt {
+        font-size: 13px;
+    }
+
+    /* Read along */
+    .read-along {
+        margin-top: 6px;
+    }
+
+    .sample-toggle {
         font-size: 13px;
     }
 
