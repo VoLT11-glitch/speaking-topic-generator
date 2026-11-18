@@ -788,6 +788,11 @@ function selectDuration(duration) {
     });
 
     resetTimer();
+
+    // Sample answer length follows the timer
+    if (currentTopic) {
+        updateSample(currentTopic);
+    }
 }
 
 
@@ -1078,20 +1083,50 @@ const readAlongSection = document.getElementById("readAlong");
 const sampleToggle = document.getElementById("sampleToggle");
 const samplePanel = document.getElementById("samplePanel");
 const sampleText = document.getElementById("sampleText");
+const sampleLength = document.getElementById("sampleLength");
 const readAlongButton = document.getElementById("readAlongBtn");
 const readRestartButton = document.getElementById("readRestartBtn");
-const paceButtons = document.querySelectorAll(".pace-btn");
+const paceSlider = document.getElementById("paceSlider");
+const paceValue = document.getElementById("paceValue");
+
+const MIN_WPM = 110;
+const MAX_WPM = 170;
 
 let sampleWords = [];           // the <span> for each word
+let wordTimes = [];             // how long each word stays highlighted (ms)
 let readIndex = 0;              // next word to highlight
 let readTimeout = null;
 let isReading = false;
-let readingWpm = readSetting("readPace", 140);
+let readingWpm = clampWpm(readSetting("readPaceWpm", 135));
 let sampleOpen = readSetting("sampleOpen", false);
 
 
+function clampWpm(value) {
+    const number = Number(value) || 135;
+    return Math.min(MAX_WPM, Math.max(MIN_WPM, number));
+}
+
+
+// Pick the sample that matches the timer:
+// 30 sec → short answer, 1 min → longer answer, 2 min → longer + "going deeper"
 function getSample(topic) {
-    return typeof samples !== "undefined" ? samples[topic] : undefined;
+
+    const short = typeof samples !== "undefined" ? samples[topic] : undefined;
+    const long = typeof samplesLong !== "undefined" ? samplesLong[topic] : undefined;
+
+    if (selectedDuration >= 120 && long && long.minute && long.more) {
+        return { text: `${long.minute} ${long.more}`, label: "about 2 min" };
+    }
+
+    if (selectedDuration >= 60 && long && long.minute) {
+        return { text: long.minute, label: "about 1 min" };
+    }
+
+    if (short) {
+        return { text: short, label: "about 30 sec" };
+    }
+
+    return null;
 }
 
 
@@ -1111,7 +1146,9 @@ function updateSample(topic) {
         return;
     }
 
-    sample.split(/\s+/).forEach(function(word, index) {
+    sampleLength.textContent = `· ${sample.label}`;
+
+    sample.text.split(/\s+/).forEach(function(word, index) {
 
         const span = document.createElement("span");
 
@@ -1126,25 +1163,39 @@ function updateSample(topic) {
         sampleText.appendChild(span);
         sampleText.appendChild(document.createTextNode(" "));
     });
+
+    computeWordTimes();
 }
 
 
-// How long to stay on a word: longer words take longer,
-// and we pause a little at commas and full stops.
-function wordDuration(word) {
+// Work out how long each word stays highlighted.
+// Longer words get a bit more time and we pause at commas and
+// full stops — then everything is scaled so the WHOLE paragraph
+// takes exactly (words ÷ wpm) minutes. So "135 wpm" really is 135.
+function computeWordTimes() {
 
-    const base = 60000 / readingWpm;
-    const letters = word.replace(/[^A-Za-z0-9']/g, "").length;
+    const weights = sampleWords.map(function(span) {
 
-    let duration = base * (0.55 + letters * 0.07);
+        const word = span.textContent;
+        const letters = word.replace(/[^A-Za-z0-9']/g, "").length;
 
-    if (/[.!?]["')]?$/.test(word)) {
-        duration += base * 1.2;
-    } else if (/[,;:—]$/.test(word)) {
-        duration += base * 0.5;
-    }
+        let weight = 0.55 + letters * 0.07;
 
-    return duration;
+        if (/[.!?]["')]?$/.test(word)) {
+            weight += 1.2;
+        } else if (/[,;:—]$/.test(word)) {
+            weight += 0.5;
+        }
+
+        return weight;
+    });
+
+    const totalWeight = weights.reduce(function(sum, w) { return sum + w; }, 0);
+    const totalMs = (sampleWords.length / readingWpm) * 60000;
+
+    wordTimes = weights.map(function(weight) {
+        return (weight / totalWeight) * totalMs;
+    });
 }
 
 
@@ -1154,6 +1205,25 @@ function highlightWord(index) {
         span.classList.toggle("read", i < index);
         span.classList.toggle("current", i === index);
     });
+
+    const current = sampleWords[index];
+
+    if (!current) {
+        return;
+    }
+
+    // The fill animation lasts exactly as long as the word does
+    current.style.setProperty("--word-time", `${Math.round(wordTimes[index])}ms`);
+
+    // Long paragraphs: keep the current line comfortably on screen
+    const rect = current.getBoundingClientRect();
+
+    if (rect.bottom > window.innerHeight - 90 || rect.top < 60) {
+        window.scrollBy({
+            top: rect.top - window.innerHeight * 0.4,
+            behavior: "smooth"
+        });
+    }
 }
 
 
@@ -1166,7 +1236,7 @@ function readNextWord() {
 
     highlightWord(readIndex);
 
-    const duration = wordDuration(sampleWords[readIndex].textContent);
+    const duration = wordTimes[readIndex];
     readIndex++;
 
     readTimeout = setTimeout(readNextWord, duration);
@@ -1189,6 +1259,7 @@ function startReadAlong(fromIndex) {
 
     isReading = true;
     sampleText.classList.add("reading");
+    sampleText.classList.remove("paused");
     readAlongButton.textContent = "⏸ Pause";
 
     readNextWord();
@@ -1207,6 +1278,7 @@ function pauseReadAlong() {
     // Go back one so Resume starts on the word that was highlighted
     readIndex = Math.max(0, readIndex - 1);
 
+    sampleText.classList.add("paused");
     readAlongButton.textContent = "▶ Resume";
 }
 
@@ -1229,7 +1301,7 @@ function stopReadAlong() {
     isReading = false;
     readIndex = 0;
 
-    sampleText.classList.remove("reading");
+    sampleText.classList.remove("reading", "paused");
     highlightWord(-1);
 
     readAlongButton.textContent = "▶ Read along";
@@ -1250,10 +1322,15 @@ function setSampleOpen(open) {
 }
 
 
+function paceName(wpm) {
+    if (wpm < 125) return "relaxed";
+    if (wpm <= 145) return "natural";
+    return "brisk";
+}
+
 function renderPace() {
-    paceButtons.forEach(function(button) {
-        button.classList.toggle("active", Number(button.dataset.wpm) === readingWpm);
-    });
+    paceSlider.value = readingWpm;
+    paceValue.textContent = `${readingWpm} wpm · ${paceName(readingWpm)}`;
 }
 
 
@@ -1274,15 +1351,14 @@ readRestartButton.addEventListener("click", function() {
     startReadAlong(0);
 });
 
-paceButtons.forEach(function(button) {
+// Pace changes apply from the next word, without restarting
+paceSlider.addEventListener("input", function() {
 
-    button.addEventListener("click", function() {
+    readingWpm = clampWpm(paceSlider.value);
+    writeSetting("readPaceWpm", readingWpm);
 
-        readingWpm = Number(button.dataset.wpm);
-        writeSetting("readPace", readingWpm);
-
-        renderPace();
-    });
+    computeWordTimes();
+    renderPace();
 });
 
 
