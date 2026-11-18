@@ -135,6 +135,44 @@
         </section>
 
 
+        <!-- Read along -->
+        <section id="readAlong" class="read-along">
+
+            <button id="sampleToggle" class="sample-toggle" aria-expanded="false" aria-controls="samplePanel">
+                Read a sample answer <span class="arrow">↓</span>
+            </button>
+
+            <div id="samplePanel" class="sample-panel" hidden>
+
+                <div class="sample-head">
+
+                    <p class="sample-label">ONE WAY TO ANSWER</p>
+
+                    <div class="pace-options" role="group" aria-label="Reading pace">
+                        <button class="pace-btn" data-wpm="110">Slow</button>
+                        <button class="pace-btn" data-wpm="140">Normal</button>
+                        <button class="pace-btn" data-wpm="170">Fast</button>
+                    </div>
+
+                </div>
+
+                <p id="sampleText" class="sample-text"></p>
+
+                <div class="sample-controls">
+
+                    <button id="readAlongBtn" class="read-btn">▶ Read along</button>
+
+                    <button id="readRestartBtn" class="read-restart">↺ Restart</button>
+
+                    <span class="sample-hint">Read it out loud. Tap any word to start there.</span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
         <!-- Generate -->
         <div class="action">
 
@@ -243,6 +281,7 @@
     </main>
 
 
+    <script src="samples.js"></script>
     <script src="script.js"></script>
 
 </body>

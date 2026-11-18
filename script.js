@@ -362,6 +362,8 @@ function showTopic(text) {
     fitTopic(heading);
 
     currentTopic = text;
+
+    updateSample(text);
 }
 
 
@@ -375,6 +377,8 @@ function generateTopic() {
 
     isShuffling = true;
     generateButton.disabled = true;
+
+    pauseReadAlong();
 
     const category = categorySelect.value;
     const difficulty = difficultySelect.value;
@@ -441,16 +445,31 @@ generateButton.addEventListener("click", generateTopic);
 categorySelect.addEventListener("change", generateTopic);
 difficultySelect.addEventListener("change", generateTopic);
 
-// Re-fit the text when the screen size changes (e.g. phone rotation)
+// Re-fit the text when the screen WIDTH changes (e.g. phone rotation).
+// Height-only changes are ignored: phones fire "resize" whenever the
+// address bar hides while scrolling, and that shouldn't reset anything.
 let resizeTimeout = null;
+let lastWidth = window.innerWidth;
 
 window.addEventListener("resize", function() {
 
+    if (window.innerWidth === lastWidth) {
+        return;
+    }
+
+    lastWidth = window.innerWidth;
     clearTimeout(resizeTimeout);
 
     resizeTimeout = setTimeout(function() {
-        if (!isShuffling && currentTopic) {
-            showTopic(currentTopic);
+
+        if (isShuffling) {
+            return;
+        }
+
+        const heading = topicTrack.firstElementChild;
+
+        if (heading) {
+            fitTopic(heading);
         }
     }, 150);
 });
@@ -1050,6 +1069,224 @@ function stopRecording(keep) {
 
 
 // =========================
+// READ ALONG
+// A sample answer under the topic. "Read along" highlights it
+// word by word at speaking pace, like karaoke.
+// =========================
+
+const readAlongSection = document.getElementById("readAlong");
+const sampleToggle = document.getElementById("sampleToggle");
+const samplePanel = document.getElementById("samplePanel");
+const sampleText = document.getElementById("sampleText");
+const readAlongButton = document.getElementById("readAlongBtn");
+const readRestartButton = document.getElementById("readRestartBtn");
+const paceButtons = document.querySelectorAll(".pace-btn");
+
+let sampleWords = [];           // the <span> for each word
+let readIndex = 0;              // next word to highlight
+let readTimeout = null;
+let isReading = false;
+let readingWpm = readSetting("readPace", 140);
+let sampleOpen = readSetting("sampleOpen", false);
+
+
+function getSample(topic) {
+    return typeof samples !== "undefined" ? samples[topic] : undefined;
+}
+
+
+// Put the paragraph on the page, one <span> per word
+function updateSample(topic) {
+
+    stopReadAlong();
+
+    const sample = getSample(topic);
+
+    readAlongSection.hidden = !sample;
+
+    sampleText.innerHTML = "";
+    sampleWords = [];
+
+    if (!sample) {
+        return;
+    }
+
+    sample.split(/\s+/).forEach(function(word, index) {
+
+        const span = document.createElement("span");
+
+        span.className = "word";
+        span.textContent = word;
+
+        span.addEventListener("click", function() {
+            startReadAlong(index);
+        });
+
+        sampleWords.push(span);
+        sampleText.appendChild(span);
+        sampleText.appendChild(document.createTextNode(" "));
+    });
+}
+
+
+// How long to stay on a word: longer words take longer,
+// and we pause a little at commas and full stops.
+function wordDuration(word) {
+
+    const base = 60000 / readingWpm;
+    const letters = word.replace(/[^A-Za-z0-9']/g, "").length;
+
+    let duration = base * (0.55 + letters * 0.07);
+
+    if (/[.!?]["')]?$/.test(word)) {
+        duration += base * 1.2;
+    } else if (/[,;:—]$/.test(word)) {
+        duration += base * 0.5;
+    }
+
+    return duration;
+}
+
+
+function highlightWord(index) {
+
+    sampleWords.forEach(function(span, i) {
+        span.classList.toggle("read", i < index);
+        span.classList.toggle("current", i === index);
+    });
+}
+
+
+function readNextWord() {
+
+    if (readIndex >= sampleWords.length) {
+        finishReadAlong();
+        return;
+    }
+
+    highlightWord(readIndex);
+
+    const duration = wordDuration(sampleWords[readIndex].textContent);
+    readIndex++;
+
+    readTimeout = setTimeout(readNextWord, duration);
+}
+
+
+function startReadAlong(fromIndex) {
+
+    if (sampleWords.length === 0) {
+        return;
+    }
+
+    clearTimeout(readTimeout);
+
+    if (typeof fromIndex === "number") {
+        readIndex = fromIndex;
+    } else if (readIndex >= sampleWords.length) {
+        readIndex = 0;
+    }
+
+    isReading = true;
+    sampleText.classList.add("reading");
+    readAlongButton.textContent = "⏸ Pause";
+
+    readNextWord();
+}
+
+
+function pauseReadAlong() {
+
+    if (!isReading) {
+        return;
+    }
+
+    clearTimeout(readTimeout);
+    isReading = false;
+
+    // Go back one so Resume starts on the word that was highlighted
+    readIndex = Math.max(0, readIndex - 1);
+
+    readAlongButton.textContent = "▶ Resume";
+}
+
+
+function finishReadAlong() {
+
+    clearTimeout(readTimeout);
+    isReading = false;
+
+    highlightWord(sampleWords.length);
+    readAlongButton.textContent = "▶ Read again";
+}
+
+
+// Back to the start, nothing highlighted
+function stopReadAlong() {
+
+    clearTimeout(readTimeout);
+
+    isReading = false;
+    readIndex = 0;
+
+    sampleText.classList.remove("reading");
+    highlightWord(-1);
+
+    readAlongButton.textContent = "▶ Read along";
+}
+
+
+function setSampleOpen(open) {
+
+    sampleOpen = open;
+    writeSetting("sampleOpen", open);
+
+    samplePanel.hidden = !open;
+    sampleToggle.setAttribute("aria-expanded", String(open));
+
+    if (!open) {
+        stopReadAlong();
+    }
+}
+
+
+function renderPace() {
+    paceButtons.forEach(function(button) {
+        button.classList.toggle("active", Number(button.dataset.wpm) === readingWpm);
+    });
+}
+
+
+sampleToggle.addEventListener("click", function() {
+    setSampleOpen(!sampleOpen);
+});
+
+readAlongButton.addEventListener("click", function() {
+    if (isReading) {
+        pauseReadAlong();
+    } else {
+        startReadAlong();
+    }
+});
+
+readRestartButton.addEventListener("click", function() {
+    stopReadAlong();
+    startReadAlong(0);
+});
+
+paceButtons.forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        readingWpm = Number(button.dataset.wpm);
+        writeSetting("readPace", readingWpm);
+
+        renderPace();
+    });
+});
+
+
+// =========================
 // KEYBOARD SHORTCUTS
 // Space = new topic, T = start / pause, R = reset
 // =========================
@@ -1090,13 +1327,17 @@ showTopic(getNextTopic(categorySelect.value, difficultySelect.value));
 
 displayTopicHistory();
 renderToggles();
+renderPace();
+setSampleOpen(sampleOpen);
 renderTimer();
 
 // Fonts load after the first paint and change text size, so re-fit once they're in
 if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function() {
-        if (!isShuffling && currentTopic) {
-            showTopic(currentTopic);
+        const heading = topicTrack.firstElementChild;
+
+        if (!isShuffling && heading) {
+            fitTopic(heading);
         }
     });
 }
